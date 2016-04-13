@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Redux-actions-assertions by dmitry-zaets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Redux-actions-assertions</h1>
+      <h2 class="project-tagline">Assertions for redux actions testing</h2>
+      <a href="https://github.com/dmitry-zaets/redux-actions-assertions" class="btn">View on GitHub</a>
+      <a href="https://github.com/dmitry-zaets/redux-actions-assertions/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/dmitry-zaets/redux-actions-assertions/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="redux-actions-assertions" class="anchor" href="#redux-actions-assertions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>redux-actions-assertions</h1>
+
+<p>Assertions for redux actions testing.</p>
+
+<p>This library adds assertions for <a href="http://redux.js.org/docs/advanced/AsyncActions.html">redux actions</a> testing.<br>
+It use <a href="https://github.com/arnaudbenard/redux-mock-store">redux-mock-store</a> to mock redux store.</p>
+
+<p><a href="https://travis-ci.org/dmitry-zaets/redux-actions-assertions"><img src="https://img.shields.io/travis/dmitry-zaets/redux-actions-assertions/master.svg?style=flat-square" alt="build status"></a>
+<a href="https://www.npmjs.com/package/redux-actions-assertions"><img src="https://img.shields.io/npm/v/redux-actions-assertions.svg?style=flat-square" alt="npm version"></a></p>
+
+<h2>
+<a id="what-it-does" class="anchor" href="#what-it-does" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What it does:</h2>
+
+<ul>
+<li>
+<a href="#simplifies-initial-setup">Simplifies initial setup</a>;</li>
+<li>
+<a href="#reduces-repetitive-code-of-test-methods">Reduces repetitive code of test methods</a>;</li>
+<li>
+<a href="#allows-to-avoid-re-testing-nested-action-creators">Allows to avoid re-testing nested action creators</a>;</li>
+</ul>
+
+<h2>
+<a id="supported-assertion-frameworkslibraries" class="anchor" href="#supported-assertion-frameworkslibraries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Assertion Frameworks/Libraries:</h2>
+
+<ul>
+<li><a href="#chai">chai</a></li>
+<li><a href="#expect">expect</a></li>
+<li><a href="#expectjs">expect.js</a></li>
+<li><a href="#should">should</a></li>
+</ul>
+
+<p>If you have not found assertion framework/library that you are using - you can use <a href="#javascript">pure javascript assertion</a> or create an issue.</p>
+
+<h3>
+<a id="simplifies-initial-setup" class="anchor" href="#simplifies-initial-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simplifies initial setup</h3>
+
+<p>It provides singe-time global configuration for middlewares and initial store state.</p>
+
+<p>Without:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">middlewares</span> <span class="pl-k">=</span> [thunk];
+<span class="pl-k">const</span> <span class="pl-c1">mockStore</span> <span class="pl-k">=</span> <span class="pl-en">configureStore</span>(middlewares);
+<span class="pl-k">const</span> <span class="pl-c1">store</span> <span class="pl-k">=</span> <span class="pl-en">mockStore</span>({ <span class="pl-c">/*initial store object*});</span></pre></div>
+
+<p>With:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">registerMiddlewares</span>([ thunk ]);
+<span class="pl-c">// to set custom initial state </span>
+<span class="pl-en">registerInitialStoreState</span>(<span class="pl-c">/*object of function*/</span>);
+<span class="pl-c">// to generate initial state of your application</span>
+<span class="pl-en">registerInitialStoreState</span>(<span class="pl-en">buildInitialStoreState</span>(<span class="pl-c">/*your root reducer*/</span>));</pre></div>
+
+<h3>
+<a id="reduces-repetitive-code-of-test-methods" class="anchor" href="#reduces-repetitive-code-of-test-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reduces repetitive code of test methods</h3>
+
+<p>It reduces boilerplate of test methods and makes testing fluent.</p>
+
+<p>Without:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">store</span> <span class="pl-k">=</span> <span class="pl-en">mockStore</span>(<span class="pl-c">/* initial state */</span>);
+<span class="pl-k">const</span> <span class="pl-c1">expectedActions</span> <span class="pl-k">=</span> [
+  { type<span class="pl-k">:</span> <span class="pl-smi">types</span>.<span class="pl-c1">FETCH_TODOS_REQUEST</span> },
+  <span class="pl-c">/* All expected triggered action objects */</span>
+];
+<span class="pl-smi">store</span>.<span class="pl-en">dispatch</span>(<span class="pl-en">fetchData</span>()).<span class="pl-en">then</span>(() <span class="pl-k">=&gt;</span> {
+  <span class="pl-k">const</span> <span class="pl-c1">actions</span> <span class="pl-k">=</span> <span class="pl-smi">store</span>.<span class="pl-en">getActions</span>();
+  <span class="pl-en">expect</span>(actions).<span class="pl-en">toEqual</span>(expectedActions);
+}).<span class="pl-en">then</span>(done).<span class="pl-en">catch</span>(done);</pre></div>
+
+<p>With:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">expectedActions</span> <span class="pl-k">=</span> [
+  <span class="pl-c">/*All expected triggered action objects or action creator functions*/</span>
+];
+<span class="pl-en">expect</span>(<span class="pl-en">fetchData</span>()).<span class="pl-en">toDispatchActions</span>(expectedActions, done);</pre></div>
+
+<p>With using customised store state:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">fetchData</span>()).<span class="pl-en">withState</span>({<span class="pl-c">/*custom state*/</span>}).<span class="pl-en">toDispatchActions</span>(expectedActions, done);</pre></div>
+
+<h3>
+<a id="allows-to-avoid-re-testing-nested-action-creators" class="anchor" href="#allows-to-avoid-re-testing-nested-action-creators" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Allows to avoid re-testing nested action creators</h3>
+
+<p>It allows to test only actions that needs to be tested.</p>
+
+<p><strong>Example:</strong><br>
+We have two actions (A, B). Each one makes async http requests.<br>
+Action A makes request and if result is successful it triggers Action B.<br>
+Action B is also used as independent action.<br>
+Action B can be tested separately.<br>
+We don't need to test it again in Action A.  </p>
+
+<p>Actions:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">actionA</span>() {
+  <span class="pl-k">return</span> <span class="pl-smi">dispatch</span> <span class="pl-k">=&gt;</span> {
+    <span class="pl-en">dispatch</span>(<span class="pl-en">actionAStart</span>());
+    <span class="pl-k">return</span> <span class="pl-smi">api</span>.<span class="pl-en">getA</span>().<span class="pl-en">then</span>(<span class="pl-smi">response</span> <span class="pl-k">=&gt;</span> {
+        <span class="pl-en">dispatch</span>(<span class="pl-en">actionAFinish</span>(response));
+        <span class="pl-en">dispatch</span>(<span class="pl-en">actionB</span>());
+      }).<span class="pl-en">catch</span>(<span class="pl-smi">err</span> <span class="pl-k">=&gt;</span> {
+        <span class="pl-en">dispatch</span>(<span class="pl-en">actionAFailure</span>(err));
+      });
+    };
+}
+
+<span class="pl-k">function</span> <span class="pl-en">actionB</span>() {
+  <span class="pl-k">return</span> <span class="pl-smi">dispatch</span> <span class="pl-k">=&gt;</span> {
+    <span class="pl-en">dispatch</span>(<span class="pl-en">actionBStart</span>());
+    <span class="pl-k">return</span> <span class="pl-smi">api</span>.<span class="pl-en">getB</span>().<span class="pl-en">then</span>(<span class="pl-smi">response</span> <span class="pl-k">=&gt;</span> {
+        <span class="pl-en">dispatch</span>(<span class="pl-en">actionBFinish</span>(response));
+      }).<span class="pl-en">catch</span>(<span class="pl-smi">err</span> <span class="pl-k">=&gt;</span> {
+        <span class="pl-en">dispatch</span>(<span class="pl-en">actionBFailure</span>(err));
+      });
+    };
+}</pre></div>
+
+<p>Without:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">expectedActions</span> <span class="pl-k">=</span> [
+  { type<span class="pl-k">:</span> action_a_start },
+  { type<span class="pl-k">:</span> action_a_success },   
+  { type<span class="pl-k">:</span> action_b_start }, <span class="pl-c">// retesting of action B</span>
+  { type<span class="pl-k">:</span> action_b_success } <span class="pl-c">// retesting of action B];</span>
+<span class="pl-k">const</span> <span class="pl-c1">store</span> <span class="pl-k">=</span> <span class="pl-en">mockStore</span>({ todos<span class="pl-k">:</span> [] });
+<span class="pl-smi">store</span>.<span class="pl-en">dispatch</span>(<span class="pl-en">actionA</span>()).<span class="pl-en">then</span>(() <span class="pl-k">=&gt;</span> {
+  <span class="pl-en">expect</span>(<span class="pl-smi">store</span>.<span class="pl-en">getActions</span>()).<span class="pl-en">toEqual</span>(expectedActions);
+}).<span class="pl-en">then</span>(done).<span class="pl-en">catch</span>(done);</pre></div>
+
+<p>With:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">actionA</span>()).<span class="pl-en">withState</span>({ todos<span class="pl-k">:</span> [] }).<span class="pl-en">toDispatch</span>([
+  { type<span class="pl-k">:</span> action_a_start },
+  { type<span class="pl-k">:</span> action_a_success },
+  <span class="pl-en">actionB</span>() <span class="pl-c">// just executing tested action</span>
+], done);</pre></div>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Using <a href="https://www.npmjs.org/">npm</a>:</p>
+
+<pre><code>$ npm install --save redux-actions-assertions
+</code></pre>
+
+<h3>
+<a id="redux-middlewares-registration" class="anchor" href="#redux-middlewares-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Redux middlewares registration</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerMiddlewares</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerMiddlewares <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>).<span class="pl-smi">registerMiddlewares</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerMiddlewares</span>([
+  <span class="pl-c">/* Here you need to list your middlewares */</span>
+]);</pre></div>
+
+<h3>
+<a id="default-initial-store-state-registration" class="anchor" href="#default-initial-store-state-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Default initial store state registration</h3>
+
+<p><strong>By using state object or function:</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerInitialStoreState</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerInitialStoreState <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>).<span class="pl-smi">registerInitialStoreState</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerInitialStoreState</span>(<span class="pl-c">/* default initial state object or function */</span>);</pre></div>
+
+<p><strong>By using your root reducer:</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">buildInitialStoreState</span>, <span class="pl-smi">registerInitialStoreState</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> reduxActionsAssertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> registerInitialStoreState <span class="pl-k">=</span> <span class="pl-smi">reduxActionsAssertions</span>.<span class="pl-smi">registerInitialStoreState</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerInitialStoreState</span>(<span class="pl-en">buildInitialStoreState</span>(<span class="pl-c">/* root reducer function */</span>));</pre></div>
+
+<h2>
+<a id="javascript" class="anchor" href="#javascript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>javascript</h2>
+
+<h3>
+<a id="registration" class="anchor" href="#registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Registration</h3>
+
+<p>For plain javasript assertions you dont need to register anything. Just import assertions in your tests:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> <span class="pl-smi">assertions</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/assertions<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> assertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/assertions<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// in test</span>
+<span class="pl-smi">assertions</span>.<span class="pl-en">toDispatchActions</span>(<span class="pl-c">/**/</span>)
+<span class="pl-smi">assertions</span>.<span class="pl-en">toDispatchActionsWithState</span>(<span class="pl-c">/**/</span>);</pre></div>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a id="todispatchactions" class="anchor" href="#todispatchactions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>toDispatchActions</h4>
+
+<blockquote>
+<p><code>toDispatchActions(action, expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">toDispatchActions</span>(<span class="pl-en">testActionCreator</span>(), [{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }], callback);</pre></div>
+
+<h4>
+<a id="todispatchactionswithstate" class="anchor" href="#todispatchactionswithstate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>toDispatchActionsWithState</h4>
+
+<blockquote>
+<p><code>toDispatchActionsWithState(initialState, action, expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Same as <code>toDispatchActions</code> + asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">toDispatchActions</span>({property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>}, <span class="pl-en">testActionCreator</span>(), [{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }], callback);</pre></div>
+
+<h2>
+<a id="chai" class="anchor" href="#chai" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/chaijs/chai">chai</a>
+</h2>
+
+<h3>
+<a id="registration-1" class="anchor" href="#registration-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Registration</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerAssertions</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/chai<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerAssertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/chai<span class="pl-pds">'</span></span>).<span class="pl-smi">registerAssertions</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerAssertions</span>();</pre></div>
+
+<h4>
+<a id="todispatchactions-or-assertisdispatching" class="anchor" href="#todispatchactions-or-assertisdispatching" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.to.dispatch.actions or assert.isDispatching</h4>
+
+<blockquote>
+<p><code>expect(action).to.dispatch.actions(expectedActions, callback)</code></p>
+
+<p><code>action.should.dispatch.actions(expectedActions, callback)</code></p>
+
+<p><code>assert.isDispatching(action, expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-smi">to</span>.<span class="pl-smi">dispatch</span>.<span class="pl-en">actions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-en">myActionCreator</span>()
+  .<span class="pl-smi">should</span>.<span class="pl-smi">dispatch</span>.<span class="pl-en">actions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-smi">assert</span>.<span class="pl-en">isDispatching</span>(
+  <span class="pl-en">myActionCreator</span>(),
+  { type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> },
+  callback
+);</pre></div>
+
+<h4>
+<a id="withstate-or-assertisdispatchingwithstate" class="anchor" href="#withstate-or-assertisdispatchingwithstate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.with.state or assert.isDispatchingWithState</h4>
+
+<blockquote>
+<p><code>expect(action).with.state(state).to.dispatch.actions(expectedActions, callback)</code></p>
+
+<p><code>action.should.with.state(state).dispatch.actions(expectedActions, callback)</code></p>
+
+<p><code>assert.isDispatchingWithState(action, expectedActions, state, callback)</code></p>
+</blockquote>
+
+<p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-smi">with</span>.<span class="pl-en">state</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-smi">to</span>.<span class="pl-smi">dispatch</span>.<span class="pl-en">actions</span>([{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, <span class="pl-en">finishActionCreator</span>()], callback);
+
+<span class="pl-en">myActionCreator</span>()
+  .<span class="pl-smi">should</span>.<span class="pl-smi">with</span>.({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-smi">dispatch</span>.<span class="pl-en">actions</span>([{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, <span class="pl-en">finishActionCreator</span>()], callback);
+
+<span class="pl-smi">assert</span>.<span class="pl-en">isDispatchingWithState</span>(
+  <span class="pl-en">myActionCreator</span>(),
+  [{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, <span class="pl-en">finishActionCreator</span>()],
+  { property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> }
+  callback
+);</pre></div>
+
+<h2>
+<a id="expect" class="anchor" href="#expect" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/mjackson/expect">expect</a>
+</h2>
+
+<h3>
+<a id="registration-2" class="anchor" href="#registration-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Registration</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerAssertions</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/expect<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerAssertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/expect<span class="pl-pds">'</span></span>).<span class="pl-smi">registerAssertions</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerAssertions</span>();</pre></div>
+
+<h3>
+<a id="usage-1" class="anchor" href="#usage-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a id="todispatchactions-1" class="anchor" href="#todispatchactions-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.toDispatchActions</h4>
+
+<blockquote>
+<p><code>expect(action).toDispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-en">toDispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);</pre></div>
+
+<h4>
+<a id="withstate" class="anchor" href="#withstate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.withState</h4>
+
+<blockquote>
+<p><code>expect(action).withState(state).toDispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-en">withState</span>({property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>})
+  .<span class="pl-en">toDispatchActions</span>([{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, <span class="pl-en">finishActionCreator</span>()], callback);</pre></div>
+
+<h2>
+<a id="expectjs" class="anchor" href="#expectjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/Automattic/expect.js">expect.js</a>
+</h2>
+
+<h3>
+<a id="registration-3" class="anchor" href="#registration-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Registration</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerAssertions</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/expectjs<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerAssertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/expectjs<span class="pl-pds">'</span></span>).<span class="pl-smi">registerAssertions</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerAssertions</span>();</pre></div>
+
+<h3>
+<a id="usage-2" class="anchor" href="#usage-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a id="dispatchactions" class="anchor" href="#dispatchactions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.dispatchActions</h4>
+
+<blockquote>
+<p><code>expect(action).to.dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-smi">to</span>.<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);</pre></div>
+
+<h4>
+<a id="withstate-1" class="anchor" href="#withstate-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.withState</h4>
+
+<blockquote>
+<p><code>expect(action).withState(state).to.dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">expect</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-en">withState</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-smi">to</span>.<span class="pl-en">dispatchActions</span>([{ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, <span class="pl-en">finishActionCreator</span>()], callback);</pre></div>
+
+<h2>
+<a id="should" class="anchor" href="#should" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/shouldjs/should.js">should</a>
+</h2>
+
+<h3>
+<a id="registration-4" class="anchor" href="#registration-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Registration</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// using ES6 modules</span>
+<span class="pl-k">import</span> { <span class="pl-smi">registerAssertions</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/should<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// using CommonJS modules</span>
+<span class="pl-k">var</span> registerAssertions <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>redux-actions-assertions/should<span class="pl-pds">'</span></span>).<span class="pl-smi">registerAssertions</span>;
+
+<span class="pl-c">// registration</span>
+<span class="pl-en">registerAssertions</span>();</pre></div>
+
+<h3>
+<a id="usage-3" class="anchor" href="#usage-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<h4>
+<a id="dispatchactions-1" class="anchor" href="#dispatchactions-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.dispatchActions</h4>
+
+<blockquote>
+<p><code>should(action).dispatchActions(expectedActions, callback)</code>
+<code>action.should.dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">should</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-en">myActionCreator</span>().<span class="pl-smi">should</span>
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);</pre></div>
+
+<h4>
+<a id="withstate-or-withstate" class="anchor" href="#withstate-or-withstate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>.withState or with.state</h4>
+
+<blockquote>
+<p><code>should(action).withState(state).dispatchActions(expectedActions, callback)</code>
+<code>should(action).with.state(state).dispatchActions(expectedActions, callback)</code></p>
+
+<p><code>action.should.withState(state).dispatchActions(expectedActions, callback)</code>
+<code>action.should.with.state(state).dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+
+<p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">should</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-en">withState</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-en">should</span>(<span class="pl-en">myActionCreator</span>())
+  .<span class="pl-smi">with</span>.<span class="pl-en">state</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-en">myActionCreator</span>().<span class="pl-smi">should</span>
+  .<span class="pl-en">withState</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);
+
+<span class="pl-en">myActionCreator</span>().<span class="pl-smi">should</span>
+  .<span class="pl-smi">with</span>.<span class="pl-en">state</span>({ property<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span> })
+  .<span class="pl-en">dispatchActions</span>({ type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MY_ACTION_START<span class="pl-pds">'</span></span> }, callback);</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/dmitry-zaets/redux-actions-assertions">Redux-actions-assertions</a> is maintained by <a href="https://github.com/dmitry-zaets">dmitry-zaets</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
