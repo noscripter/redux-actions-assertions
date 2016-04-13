@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Introduction | redux-actions-assertions</title>
+        <title>expect.js | redux-actions-assertions</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="Assertions for redux actions testing.">
+        <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
         
         
@@ -37,8 +37,10 @@
         
     
     
-    <link rel="next" href="./what_it_does.html" />
+    <link rel="next" href="./should.html" />
     
+    
+    <link rel="prev" href="./expect.html" />
     
 
         
@@ -47,9 +49,9 @@
         
         
     <div class="book"
-        data-level="0"
-        data-chapter-title="Introduction"
-        data-filepath="README.md"
+        data-level="6"
+        data-chapter-title="expect.js"
+        data-filepath="expectjs.md"
         data-basepath="."
         data-revision="Wed Apr 13 2016 16:13:11 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -67,7 +69,7 @@
 
             
     
-        <li class="chapter active" data-level="0" data-path="index.html">
+        <li class="chapter " data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -155,7 +157,7 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="expectjs.html">
+        <li class="chapter active" data-level="6" data-path="expectjs.html">
             
                 
                     <a href="./expectjs.html">
@@ -218,25 +220,35 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="reduxactionsassertions">redux-actions-assertions</h1>
-<p>Assertions for redux actions testing.</p>
-<p>This library adds assertions for <a href="http://redux.js.org/docs/advanced/AsyncActions.html" target="_blank">redux actions</a> testing.<br>It use <a href="https://github.com/arnaudbenard/redux-mock-store" target="_blank">redux-mock-store</a> to mock redux store.</p>
-<p><a href="https://travis-ci.org/dmitry-zaets/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/travis/dmitry-zaets/redux-actions-assertions/master.svg?style=flat-square" alt="build status"></a>
-<a href="https://www.npmjs.com/package/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/npm/v/redux-actions-assertions.svg?style=flat-square" alt="npm version"></a></p>
-<h2 id="what-it-does">What it does</h2>
-<ul>
-<li><a href="what_it_does.html#simplifies-initial-setup">Simplifies initial setup</a>;</li>
-<li><a href="what_it_does.html#reduces-repetitive-code-of-test-methods">Reduces repetitive code of test methods</a>;</li>
-<li><a href="what_it_does.html#allows-to-avoid-re-testing-nested-action-creators">Allows to avoid re-testing nested action creators</a>;</li>
-</ul>
-<h2 id="supported-assertion-frameworkslibraries">Supported Assertion Frameworks/Libraries:</h2>
-<ul>
-<li><a href="chai.html">chai</a></li>
-<li><a href="expect.html">expect</a></li>
-<li><a href="expectjs.html">expect.js</a></li>
-<li><a href="should.html">should</a></li>
-</ul>
-<p>In case if you are using another testing framework - you can use <a href="javascript.html">pure javascript assertion</a> or create an issue.</p>
+                        <h2 id="expectjs"><a href="https://github.com/Automattic/expect.js" target="_blank">expect.js</a></h2>
+<h3 id="registration">Registration</h3>
+<pre><code class="lang-js"><span class="hljs-comment">// using ES6 modules</span>
+<span class="hljs-keyword">import</span> { registerAssertions } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;redux-actions-assertions/expectjs&apos;</span>;
+
+<span class="hljs-comment">// using CommonJS modules</span>
+<span class="hljs-keyword">var</span> registerAssertions = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;redux-actions-assertions/expectjs&apos;</span>).registerAssertions;
+
+<span class="hljs-comment">// registration</span>
+registerAssertions();
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="dispatchactions">.dispatchActions</h3>
+<blockquote>
+<p><code>expect(action).to.dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+<p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+<pre><code class="lang-js">expect(myActionCreator())
+  .to.dispatchActions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
+</code></pre>
+<h3 id="withstate">.withState</h3>
+<blockquote>
+<p><code>expect(action).withState(state).to.dispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+<p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+<pre><code class="lang-js">expect(myActionCreator())
+  .withState({ property: <span class="hljs-string">&apos;value&apos;</span> })
+  .to.dispatchActions([{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, finishActionCreator()], callback);
+</code></pre>
 
                     
                     </section>
@@ -247,8 +259,10 @@
         </div>
 
         
+        <a href="./expect.html" class="navigation navigation-prev " aria-label="Previous page: expect"><i class="fa fa-angle-left"></i></a>
         
-        <a href="./what_it_does.html" class="navigation navigation-next navigation-unique" aria-label="Next page: What it does"><i class="fa fa-angle-right"></i></a>
+        
+        <a href="./should.html" class="navigation navigation-next " aria-label="Next page: should"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

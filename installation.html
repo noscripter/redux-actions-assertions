@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Introduction | redux-actions-assertions</title>
+        <title>Installation | redux-actions-assertions</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="Assertions for redux actions testing.">
+        <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
         
         
@@ -37,8 +37,10 @@
         
     
     
-    <link rel="next" href="./what_it_does.html" />
+    <link rel="next" href="./javascript.html" />
     
+    
+    <link rel="prev" href="./what_it_does.html" />
     
 
         
@@ -47,9 +49,9 @@
         
         
     <div class="book"
-        data-level="0"
-        data-chapter-title="Introduction"
-        data-filepath="README.md"
+        data-level="2"
+        data-chapter-title="Installation"
+        data-filepath="installation.md"
         data-basepath="."
         data-revision="Wed Apr 13 2016 16:13:11 GMT+0200 (CEST)"
         data-innerlanguage="">
@@ -67,7 +69,7 @@
 
             
     
-        <li class="chapter active" data-level="0" data-path="index.html">
+        <li class="chapter " data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -95,7 +97,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2" data-path="installation.html">
+        <li class="chapter active" data-level="2" data-path="installation.html">
             
                 
                     <a href="./installation.html">
@@ -218,25 +220,43 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="reduxactionsassertions">redux-actions-assertions</h1>
-<p>Assertions for redux actions testing.</p>
-<p>This library adds assertions for <a href="http://redux.js.org/docs/advanced/AsyncActions.html" target="_blank">redux actions</a> testing.<br>It use <a href="https://github.com/arnaudbenard/redux-mock-store" target="_blank">redux-mock-store</a> to mock redux store.</p>
-<p><a href="https://travis-ci.org/dmitry-zaets/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/travis/dmitry-zaets/redux-actions-assertions/master.svg?style=flat-square" alt="build status"></a>
-<a href="https://www.npmjs.com/package/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/npm/v/redux-actions-assertions.svg?style=flat-square" alt="npm version"></a></p>
-<h2 id="what-it-does">What it does</h2>
-<ul>
-<li><a href="what_it_does.html#simplifies-initial-setup">Simplifies initial setup</a>;</li>
-<li><a href="what_it_does.html#reduces-repetitive-code-of-test-methods">Reduces repetitive code of test methods</a>;</li>
-<li><a href="what_it_does.html#allows-to-avoid-re-testing-nested-action-creators">Allows to avoid re-testing nested action creators</a>;</li>
-</ul>
-<h2 id="supported-assertion-frameworkslibraries">Supported Assertion Frameworks/Libraries:</h2>
-<ul>
-<li><a href="chai.html">chai</a></li>
-<li><a href="expect.html">expect</a></li>
-<li><a href="expectjs.html">expect.js</a></li>
-<li><a href="should.html">should</a></li>
-</ul>
-<p>In case if you are using another testing framework - you can use <a href="javascript.html">pure javascript assertion</a> or create an issue.</p>
+                        <h1 id="installation">Installation</h1>
+<p>Using <a href="https://www.npmjs.org/" target="_blank">npm</a>:</p>
+<pre><code>$ npm install --save redux-actions-assertions
+</code></pre><h2 id="redux-middlewares-registration">Redux middlewares registration</h2>
+<pre><code class="lang-js"><span class="hljs-comment">// using ES6 modules</span>
+<span class="hljs-keyword">import</span> { registerMiddlewares } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;redux-actions-assertions&apos;</span>;
+
+<span class="hljs-comment">// using CommonJS modules</span>
+<span class="hljs-keyword">var</span> registerMiddlewares = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;redux-actions-assertions&apos;</span>).registerMiddlewares;
+
+<span class="hljs-comment">// registration</span>
+registerMiddlewares([
+  <span class="hljs-comment">/* Here you need to list your middlewares */</span>
+]);
+</code></pre>
+<h2 id="default-initial-store-state-registration">Default initial store state registration</h2>
+<p><strong>By using state object or function:</strong></p>
+<pre><code class="lang-js"><span class="hljs-comment">// using ES6 modules</span>
+<span class="hljs-keyword">import</span> { registerInitialStoreState } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;redux-actions-assertions&apos;</span>;
+
+<span class="hljs-comment">// using CommonJS modules</span>
+<span class="hljs-keyword">var</span> registerInitialStoreState = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;redux-actions-assertions&apos;</span>).registerInitialStoreState;
+
+<span class="hljs-comment">// registration</span>
+registerInitialStoreState(<span class="hljs-comment">/* default initial state object or function */</span>);
+</code></pre>
+<p><strong>By using your root reducer:</strong></p>
+<pre><code class="lang-js"><span class="hljs-comment">// using ES6 modules</span>
+<span class="hljs-keyword">import</span> { buildInitialStoreState, registerInitialStoreState } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;redux-actions-assertions&apos;</span>;
+
+<span class="hljs-comment">// using CommonJS modules</span>
+<span class="hljs-keyword">var</span> reduxActionsAssertions = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;redux-actions-assertions&apos;</span>);
+<span class="hljs-keyword">var</span> registerInitialStoreState = reduxActionsAssertions.registerInitialStoreState;
+
+<span class="hljs-comment">// registration</span>
+registerInitialStoreState(buildInitialStoreState(<span class="hljs-comment">/* root reducer function */</span>));
+</code></pre>
 
                     
                     </section>
@@ -247,8 +267,10 @@
         </div>
 
         
+        <a href="./what_it_does.html" class="navigation navigation-prev " aria-label="Previous page: What it does"><i class="fa fa-angle-left"></i></a>
         
-        <a href="./what_it_does.html" class="navigation navigation-next navigation-unique" aria-label="Next page: What it does"><i class="fa fa-angle-right"></i></a>
+        
+        <a href="./javascript.html" class="navigation navigation-next " aria-label="Next page: javascript"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
