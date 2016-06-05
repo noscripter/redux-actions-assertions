@@ -51,7 +51,7 @@
         data-chapter-title="Introduction"
         data-filepath="README.md"
         data-basepath="."
-        data-revision="Sun Apr 24 2016 10:52:27 GMT+0200 (CEST)"
+        data-revision="Sun Jun 05 2016 09:05:38 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -119,20 +119,21 @@
                         
                             <b>3.</b>
                         
-                        javascript
+                        API Reference
                     </a>
             
             
-        </li>
+            <ul class="articles">
+                
     
-        <li class="chapter " data-level="4" data-path="chai.html">
+        <li class="chapter " data-level="3.1" data-path="chai.html">
             
                 
                     <a href="./chai.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>4.</b>
+                            <b>3.1.</b>
                         
                         chai
                     </a>
@@ -140,14 +141,14 @@
             
         </li>
     
-        <li class="chapter " data-level="5" data-path="expect.html">
+        <li class="chapter " data-level="3.2" data-path="expect.html">
             
                 
                     <a href="./expect.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>5.</b>
+                            <b>3.2.</b>
                         
                         expect
                     </a>
@@ -155,14 +156,14 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="expectjs.html">
+        <li class="chapter " data-level="3.3" data-path="expectjs.html">
             
                 
                     <a href="./expectjs.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>6.</b>
+                            <b>3.3.</b>
                         
                         expect.js
                     </a>
@@ -170,18 +171,23 @@
             
         </li>
     
-        <li class="chapter " data-level="7" data-path="should.html">
+        <li class="chapter " data-level="3.4" data-path="should.html">
             
                 
                     <a href="./should.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>7.</b>
+                            <b>3.4.</b>
                         
                         should
                     </a>
             
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -223,20 +229,21 @@
 <p>This library adds assertions for <a href="http://redux.js.org/docs/advanced/AsyncActions.html" target="_blank">redux actions</a> testing.<br>It use <a href="https://github.com/arnaudbenard/redux-mock-store" target="_blank">redux-mock-store</a> to mock redux store.</p>
 <p><a href="https://travis-ci.org/dmitry-zaets/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/travis/dmitry-zaets/redux-actions-assertions/master.svg?style=flat-square" alt="build status"></a>
 <a href="https://www.npmjs.com/package/redux-actions-assertions" target="_blank"><img src="https://img.shields.io/npm/v/redux-actions-assertions.svg?style=flat-square" alt="npm version"></a></p>
-<h2 id="what-it-does">What it does</h2>
-<ul>
-<li><a href="what_it_does.html#simplifies-initial-setup">Simplifies initial setup</a>;</li>
-<li><a href="what_it_does.html#reduces-repetitive-code-of-test-methods">Reduces repetitive code of test methods</a>;</li>
-<li><a href="what_it_does.html#allows-to-avoid-re-testing-nested-action-creators">Allows to avoid re-testing nested action creators</a>;</li>
-</ul>
 <h2 id="supported-assertion-frameworkslibraries">Supported Assertion Frameworks/Libraries:</h2>
 <ul>
-<li><a href="chai.html">chai</a></li>
-<li><a href="expect.html">expect</a></li>
-<li><a href="expectjs.html">expect.js</a></li>
-<li><a href="should.html">should</a></li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/chai.html" target="_blank">chai</a></li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/expect.html" target="_blank">expect</a></li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/expectjs.html" target="_blank">expect.js</a></li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/should.html" target="_blank">should</a></li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/javascript.html" target="_blank">pure javascript assertion</a></li>
 </ul>
-<p>In case if you are using another testing framework - you can use <a href="javascript.html">pure javascript assertion</a> or create an issue.</p>
+<p>If you have not found assertion framework/library that you are using - please add comment into <a href="https://github.com/dmitry-zaets/redux-actions-assertions/issues/3" target="_blank">this issue</a>.</p>
+<h2 id="what-it-does">What it does:</h2>
+<ul>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/what_it_does.html#allows-to-avoid-retesting-nested-action-creators" target="_blank">Allows to avoid retesting nested action creators</a>;</li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/what_it_does.html#reduces-repetitive-code-of-test-methods" target="_blank">Reduces repetitive code of test methods</a>;</li>
+<li><a href="http://dmitry.js.org/redux-actions-assertions/what_it_does.html#simplifies-initial-setup" target="_blank">Simplifies initial setup</a>;</li>
+</ul>
 
                     
                     </section>
@@ -274,7 +281,7 @@
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"],"website":false},"fontsettings":{"theme":"white","family":"sans","size":2}};
     gitbook.start(config);
 });
 </script>

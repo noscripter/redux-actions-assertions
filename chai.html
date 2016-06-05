@@ -49,11 +49,11 @@
         
         
     <div class="book"
-        data-level="4"
+        data-level="3.1"
         data-chapter-title="chai"
         data-filepath="chai.md"
         data-basepath="."
-        data-revision="Sun Apr 24 2016 10:52:27 GMT+0200 (CEST)"
+        data-revision="Sun Jun 05 2016 09:05:38 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -121,20 +121,21 @@
                         
                             <b>3.</b>
                         
-                        javascript
+                        API Reference
                     </a>
             
             
-        </li>
+            <ul class="articles">
+                
     
-        <li class="chapter active" data-level="4" data-path="chai.html">
+        <li class="chapter active" data-level="3.1" data-path="chai.html">
             
                 
                     <a href="./chai.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>4.</b>
+                            <b>3.1.</b>
                         
                         chai
                     </a>
@@ -142,14 +143,14 @@
             
         </li>
     
-        <li class="chapter " data-level="5" data-path="expect.html">
+        <li class="chapter " data-level="3.2" data-path="expect.html">
             
                 
                     <a href="./expect.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>5.</b>
+                            <b>3.2.</b>
                         
                         expect
                     </a>
@@ -157,14 +158,14 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="expectjs.html">
+        <li class="chapter " data-level="3.3" data-path="expectjs.html">
             
                 
                     <a href="./expectjs.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>6.</b>
+                            <b>3.3.</b>
                         
                         expect.js
                     </a>
@@ -172,18 +173,23 @@
             
         </li>
     
-        <li class="chapter " data-level="7" data-path="should.html">
+        <li class="chapter " data-level="3.4" data-path="should.html">
             
                 
                     <a href="./should.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>7.</b>
+                            <b>3.4.</b>
                         
                         should
                     </a>
             
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -231,6 +237,7 @@
 <span class="hljs-comment">// registration</span>
 registerAssertions();
 </code></pre>
+<h2 id="usage">Usage</h2>
 <h3 id="todispatchactions-or-assertisdispatching">.to.dispatch.actions or assert.isDispatching</h3>
 <blockquote>
 <p><code>expect(action).to.dispatch.actions(expectedActions, callback)</code></p>
@@ -250,11 +257,35 @@ assert.isDispatching(
   callback
 );
 </code></pre>
-<h3 id="withstate-or-assertisdispatchingwithstate">.with.state or assert.isDispatchingWithState</h3>
+<h3 id="nottodispatchactions-or-tonotdispatchactions-or-assertisnotdispatching">.not.to.dispatch.actions or .to.not.dispatch.actions or assert.isNotDispatching</h3>
 <blockquote>
-<p><code>expect(action).with.state(state).to.dispatch.actions(expectedActions, callback)</code></p>
-<p><code>action.should.with.state(state).dispatch.actions(expectedActions, callback)</code></p>
-<p><code>assert.isDispatchingWithState(action, expectedActions, state, callback)</code></p>
+<p><code>expect(action).not.to.dispatch.actions(expectedActions, callback)</code>
+<code>expect(action).to.not.dispatch.actions(expectedActions, callback)</code></p>
+<p><code>action.should.not.dispatch.actions(expectedActions, callback)</code></p>
+<p><code>assert.isNotDispatching(action, expectedActions, callback)</code></p>
+</blockquote>
+<p>Asserts that when given <code>action</code> is dispatched it will not dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+<pre><code class="lang-js">expect(myActionCreator())
+  .not.to.dispatch.actions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
+
+myActionCreator()
+  .should.not.dispatch.actions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
+
+assert.isNotDispatching(
+  myActionCreator(),
+  { type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> },
+  callback
+);
+</code></pre>
+<h3 id="withstate-or-assertisdispatchingwithstate-and-assertisnotdispatchingwithstate">.with.state or assert.isDispatchingWithState and assert.isNotDispatchingWithState</h3>
+<blockquote>
+<p><code>expect(action).with.state(state).to.dispatch.actions(expectedActions, callback)</code>
+<code>expect(action).with.state(state).not.to.dispatch.actions(expectedActions, callback)</code>
+<code>expect(action).with.state(state).to.not.dispatch.actions(expectedActions, callback)</code></p>
+<p><code>action.should.with.state(state).dispatch.actions(expectedActions, callback)</code>
+<code>action.should.with.state(state).not.dispatch.actions(expectedActions, callback)</code></p>
+<p><code>assert.isDispatchingWithState(action, expectedActions, state, callback)</code>
+<code>assert.isNotDispatchingWithState(action, expectedActions, state, callback)</code></p>
 </blockquote>
 <p>Asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
 <pre><code class="lang-js">expect(myActionCreator())
@@ -271,6 +302,13 @@ assert.isDispatchingWithState(
   { property: <span class="hljs-string">&apos;value&apos;</span> }
   callback
 );
+
+assert.isNotDispatchingWithState(
+  myActionCreator(),
+  [{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, finishActionCreator()],
+  { property: <span class="hljs-string">&apos;value&apos;</span> }
+  callback
+);
 </code></pre>
 
                     
@@ -282,7 +320,7 @@ assert.isDispatchingWithState(
         </div>
 
         
-        <a href="./javascript.html" class="navigation navigation-prev " aria-label="Previous page: javascript"><i class="fa fa-angle-left"></i></a>
+        <a href="./javascript.html" class="navigation navigation-prev " aria-label="Previous page: API Reference"><i class="fa fa-angle-left"></i></a>
         
         
         <a href="./expect.html" class="navigation navigation-next " aria-label="Next page: expect"><i class="fa fa-angle-right"></i></a>
@@ -311,7 +349,7 @@ assert.isDispatchingWithState(
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"],"website":false},"fontsettings":{"theme":"white","family":"sans","size":2}};
     gitbook.start(config);
 });
 </script>

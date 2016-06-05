@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>javascript | redux-actions-assertions</title>
+        <title>API Reference | redux-actions-assertions</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.6.7">
@@ -50,10 +50,10 @@
         
     <div class="book"
         data-level="3"
-        data-chapter-title="javascript"
+        data-chapter-title="API Reference"
         data-filepath="javascript.md"
         data-basepath="."
-        data-revision="Sun Apr 24 2016 10:52:27 GMT+0200 (CEST)"
+        data-revision="Sun Jun 05 2016 09:05:38 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -121,20 +121,21 @@
                         
                             <b>3.</b>
                         
-                        javascript
+                        API Reference
                     </a>
             
             
-        </li>
+            <ul class="articles">
+                
     
-        <li class="chapter " data-level="4" data-path="chai.html">
+        <li class="chapter " data-level="3.1" data-path="chai.html">
             
                 
                     <a href="./chai.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>4.</b>
+                            <b>3.1.</b>
                         
                         chai
                     </a>
@@ -142,14 +143,14 @@
             
         </li>
     
-        <li class="chapter " data-level="5" data-path="expect.html">
+        <li class="chapter " data-level="3.2" data-path="expect.html">
             
                 
                     <a href="./expect.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>5.</b>
+                            <b>3.2.</b>
                         
                         expect
                     </a>
@@ -157,14 +158,14 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="expectjs.html">
+        <li class="chapter " data-level="3.3" data-path="expectjs.html">
             
                 
                     <a href="./expectjs.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>6.</b>
+                            <b>3.3.</b>
                         
                         expect.js
                     </a>
@@ -172,18 +173,23 @@
             
         </li>
     
-        <li class="chapter " data-level="7" data-path="should.html">
+        <li class="chapter " data-level="3.4" data-path="should.html">
             
                 
                     <a href="./should.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>7.</b>
+                            <b>3.4.</b>
                         
                         should
                     </a>
             
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -231,7 +237,9 @@
 
 <span class="hljs-comment">// in test</span>
 assertions.toDispatchActions(<span class="hljs-comment">/**/</span>)
+assertions.toNotDispatchActions(<span class="hljs-comment">/**/</span>)
 assertions.toDispatchActionsWithState(<span class="hljs-comment">/**/</span>);
+assertions.toNotDispatchActionsWithState(<span class="hljs-comment">/**/</span>);
 </code></pre>
 <h2 id="usage">Usage</h2>
 <h3 id="todispatchactions">toDispatchActions</h3>
@@ -241,12 +249,26 @@ assertions.toDispatchActionsWithState(<span class="hljs-comment">/**/</span>);
 <p>Asserts that when given <code>action</code> is dispatched it will dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
 <pre><code class="lang-js">toDispatchActions(testActionCreator(), [{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }], callback);
 </code></pre>
+<h3 id="tonotdispatchactions">toNotDispatchActions</h3>
+<blockquote>
+<p><code>toNotDispatchActions(action, expectedActions, callback)</code></p>
+</blockquote>
+<p>Asserts that when given <code>action</code> is dispatched it will not dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+<pre><code class="lang-js">toNotDispatchActions(testActionCreator(), [{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }], callback);
+</code></pre>
 <h3 id="todispatchactionswithstate">toDispatchActionsWithState</h3>
 <blockquote>
 <p><code>toDispatchActionsWithState(initialState, action, expectedActions, callback)</code></p>
 </blockquote>
 <p>Same as <code>toDispatchActions</code> + asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
 <pre><code class="lang-js">toDispatchActions({property: <span class="hljs-string">&apos;value&apos;</span>}, testActionCreator(), [{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }], callback);
+</code></pre>
+<h3 id="tonotdispatchactionswithstate">toNotDispatchActionsWithState</h3>
+<blockquote>
+<p><code>toNotDispatchActionsWithState(initialState, action, expectedActions, callback)</code></p>
+</blockquote>
+<p>Same as <code>toNotDispatchActions</code> + asserts that store initialised with <code>state</code> before <code>action</code> is dispatched.</p>
+<pre><code class="lang-js">toNotDispatchActions({property: <span class="hljs-string">&apos;value&apos;</span>}, testActionCreator(), [{ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }], callback);
 </code></pre>
 
                     
@@ -287,7 +309,7 @@ assertions.toDispatchActionsWithState(<span class="hljs-comment">/**/</span>);
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"],"website":false},"fontsettings":{"theme":"white","family":"sans","size":2}};
     gitbook.start(config);
 });
 </script>

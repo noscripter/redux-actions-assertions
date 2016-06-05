@@ -47,11 +47,11 @@
         
         
     <div class="book"
-        data-level="7"
+        data-level="3.4"
         data-chapter-title="should"
         data-filepath="should.md"
         data-basepath="."
-        data-revision="Sun Apr 24 2016 10:52:27 GMT+0200 (CEST)"
+        data-revision="Sun Jun 05 2016 09:05:38 GMT+0200 (CEST)"
         data-innerlanguage="">
     
 
@@ -119,20 +119,21 @@
                         
                             <b>3.</b>
                         
-                        javascript
+                        API Reference
                     </a>
             
             
-        </li>
+            <ul class="articles">
+                
     
-        <li class="chapter " data-level="4" data-path="chai.html">
+        <li class="chapter " data-level="3.1" data-path="chai.html">
             
                 
                     <a href="./chai.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>4.</b>
+                            <b>3.1.</b>
                         
                         chai
                     </a>
@@ -140,14 +141,14 @@
             
         </li>
     
-        <li class="chapter " data-level="5" data-path="expect.html">
+        <li class="chapter " data-level="3.2" data-path="expect.html">
             
                 
                     <a href="./expect.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>5.</b>
+                            <b>3.2.</b>
                         
                         expect
                     </a>
@@ -155,14 +156,14 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="expectjs.html">
+        <li class="chapter " data-level="3.3" data-path="expectjs.html">
             
                 
                     <a href="./expectjs.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>6.</b>
+                            <b>3.3.</b>
                         
                         expect.js
                     </a>
@@ -170,18 +171,23 @@
             
         </li>
     
-        <li class="chapter active" data-level="7" data-path="should.html">
+        <li class="chapter active" data-level="3.4" data-path="should.html">
             
                 
                     <a href="./should.html">
                 
                         <i class="fa fa-check"></i>
                         
-                            <b>7.</b>
+                            <b>3.4.</b>
                         
                         should
                     </a>
             
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -241,6 +247,18 @@ registerAssertions();
 
 myActionCreator().should
   .dispatchActions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
+</code></pre>
+<h3 id="notdispatchactions">.notDispatchActions</h3>
+<blockquote>
+<p><code>should(action).notDispatchActions(expectedActions, callback)</code>
+<code>action.should.notDispatchActions(expectedActions, callback)</code></p>
+</blockquote>
+<p>Asserts that when given <code>action</code> is dispatched it will not dispatch <code>expectedActions</code>. <code>action</code> can be plain object (action) or function (action creator). <code>expectedActions</code> can be can be plain object (action) or function (action creator) or array of objects/functions.</p>
+<pre><code class="lang-js">should(myActionCreator())
+  .notDispatchActions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
+
+myActionCreator().should
+  .notDispatchActions({ type: <span class="hljs-string">&apos;MY_ACTION_START&apos;</span> }, callback);
 </code></pre>
 <h3 id="withstate-or-withstate">.withState or with.state</h3>
 <blockquote>
@@ -303,7 +321,7 @@ myActionCreator().should
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"],"website":false},"fontsettings":{"theme":"white","family":"sans","size":2}};
     gitbook.start(config);
 });
 </script>
