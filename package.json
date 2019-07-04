@@ -8,7 +8,8 @@
     "test:expectjs": "mocha --compilers js:babel-register --reporter spec test/expectjs/*.js",
     "test:should": "mocha --compilers js:babel-register --reporter spec test/should/*.js",
     "test": "npm run test:chai && npm run test:expect && npm run test:expectjs && npm run test:should",
-    "prepublish": "rimraf build && babel src --out-dir build --copy-files"
+    "prepublish": "npm run snyk-protect; rimraf build && babel src --out-dir build --copy-files",
+    "snyk-protect": "snyk protect"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,8 @@
     "should": "^8.3.2"
   },
   "dependencies": {
-    "redux-actions-assertions-js": "^1.0.0"
-  }
+    "redux-actions-assertions-js": "^1.0.0",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }
